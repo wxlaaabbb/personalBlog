@@ -5,7 +5,7 @@ var session = require('express-session');
 var history = require('connect-history-api-fallback');
 
 //Middleware to proxy requests through a specified index page, 
-//useful for Single Page Applications that utilise the HTML5 History API.
+//useful for Single Page Applications that utilise the HTML5 History API  .
 app.use(history());
 //session
 app.use(session({
