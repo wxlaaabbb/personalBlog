@@ -6,7 +6,7 @@ const router = express.Router()
 
 router.get('/', async function (req, res) {
     const result = await getLastEveryDay();
-    res.send( fCode('0','',result) )
+    res.send( fCode('0','查询成功',result) )
 })
 
 router.put('/', async function (req, res) {

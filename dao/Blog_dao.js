@@ -42,7 +42,8 @@ async function queryList(page = 1, pageSize = 10, arg ) {
     }
     // 
     if( arg && arg.content ){
-        sqlWere += `and content like ?`;
+        sqlWere += `and ( content like ? or title like ? )`;
+        values.push(`%${arg.content}%`);
         values.push(`%${arg.content}%`);
     } 
     const sql = `select * from blog ${sqlWere} order by id desc limit ?,?`;
@@ -69,21 +70,21 @@ async function count(arg) {
     }
     // 
     if( arg && arg.content ){
-        sqlWere += `and content like ?`;
+        sqlWere += `and ( content like ? or title like ? )`;
+        values.push(`%${arg.content}%`);
         values.push(`%${arg.content}%`);
     } 
     const sql = `select count(id) as count from blog ${sqlWere}`
     const result = await db.query(sql, values);
     return JSON.stringify( result[0][0].count);
 }
-
-
 /**
  * update blog
  * @param {*} blogObj 
  * @param {*} ctime 
  */
 async function update(blogObj) {
+    // console.log('blogObj', blogObj);
     const sql = "update blog set title=?, content=?, tags=?, utime=? where id = ?";
     const values = [blogObj.title, blogObj.content, blogObj.tags, blogObj.utime, blogObj.id];
     const result = await db.query(sql, values);

@@ -20,10 +20,12 @@ app.use(express.static("./dist/"));
   // app.use(history());
 app.use(express.json());
 
+//验证
+app.use(require("./tokenMiddleware"));
 
 /**验证码 */
 /** veritficationCode */
-app.use('/api',require('./utilMid/verificationCode.js'))
+app.use('/api',require('./utilMid/verificationCode.js'));
 
 /** 每日一句*/
 app.use('/api/everyDay', require('./api/every_day.js'));
@@ -39,6 +41,8 @@ app.use('/api/comment',require('./api/comment.js'));
 
 /**tag */
 app.use('/api/tag',require('./api/tag.js'));
+/** admin */
+app.use('/api/admin',require('./api/admin.js'));
 
 
 

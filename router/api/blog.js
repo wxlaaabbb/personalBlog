@@ -18,7 +18,7 @@ router.get('/', async function (req, res) {
     //     count:count,
     //     data:result
     // }
-    res.send( fCode('0','',result) )
+    res.send( fCode('0','查询成功',result) )
 })
 /** get hot blogs */
 router.get('/hot', async function (req, res) {
@@ -30,7 +30,6 @@ router.get('/hot', async function (req, res) {
         const result = await blog_service.queryHotBlog(+size);
         res.send( fCode('0','',result) )
     }
-
 })
 /** get a blog */
 router.get('/:id', async function (req, res) {
@@ -54,7 +53,7 @@ router.put('/', async function (req, res) {
 router.post('/', async function (req, res) {
     const blogObj = req.body;
     const result = await blog_service.update( blogObj );
-    res.send( fCode('0','',result) );
+    res.send( fCode('0','修改成功',result) );
 })
 
 module.exports = router

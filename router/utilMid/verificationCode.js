@@ -8,7 +8,7 @@ const router = express.Router();
 function verifitcation(req,res,next){
     const commentObj = req.body;
     const reqCaptcha = commentObj.verificationCode ? commentObj.verificationCode.toLowerCase() : ""; //用户传递的验证码
-    // console.log(reqCaptcha , req.session.captcha )
+    console.log(reqCaptcha , req.session.captcha )
     // console.log(req,req.url);
     if(req.url === '/upload'){
         next();
