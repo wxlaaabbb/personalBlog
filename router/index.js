@@ -6,7 +6,16 @@ var history = require('connect-history-api-fallback');
 
 //Middleware to proxy requests through a specified index page, 
 //useful for Single Page Applications that utilise the HTML5 History API  .
-app.use(history());
+app.use(history({
+  rewrites: [
+    {
+      from: /^\/api\/.*$/,
+      to: function(context) {
+        return  context.parsedUrl.pathname;
+      }
+    }
+  ]
+}));
 //session
 app.use(session({
     secret: 'keyboard cat',

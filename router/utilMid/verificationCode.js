@@ -8,19 +8,18 @@ const router = express.Router();
 function verifitcation(req,res,next){
     const commentObj = req.body;
     const reqCaptcha = commentObj.verificationCode ? commentObj.verificationCode.toLowerCase() : ""; //用户传递的验证码
-    console.log(reqCaptcha , req.session.captcha )
-    // console.log(req,req.url);
+    // console.log(reqCaptcha , req.session.captcha )
+    // console.log('verifitation',req.url);
     if(req.url === '/upload'){
         next();
     }else{
-        if(req.session.captcha.toLowerCase() !== reqCaptcha){
+        if(req.session.captcha && req.session.captcha.toLowerCase() !== reqCaptcha){
             res.send( fCode('1','验证码错误') );
         }else{
-            req.session.captcha = "poia";
+            req.session.captcha = 'poia'; 
             next();
         }
     } 
-
 }
 /** */
 router.get('/verificationCode', function (req, res) {

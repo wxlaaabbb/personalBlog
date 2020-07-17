@@ -3,7 +3,7 @@ var multer = require('multer')
 const path = require('path')
 const Jimp = require('jimp');
 
-const pp = path.resolve(__dirname, '../../dist/uploads/');
+const pp = path.resolve(__dirname, '../../dist/uploadsOrigin/');
 // console.log(pp)
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -36,34 +36,15 @@ var upload = multer({
 const router = express.Router();
 
 
-router.post('/', upload.single('img'), async (req, res, next) => {
-    // console.log('aaaaaaaaaaaa',req.file)
-    const url = `/uploads/${req.file.filename}`;
-    // 加水印
-    const newPath = path.resolve(
-        __dirname,
-        "../../dist/uploads",
-        req.file.filename
-    );
-    const waterPath = path.resolve(__dirname, '../../dist/uploads/water.png')
-    await mark(waterPath, req.file.path, newPath);
-    res.send({
-        code: 0,
-        msg: '',
-        data: url
-    })
-})
-
-module.exports = router;
-
-
-
-
-
-
-
-
 // 给一张图片加水印
+/**
+ * 
+ * @param {*} waterFile 
+ * @param {*} originFile 
+ * @param {*} targetFile 
+ * @param {*} proportion 
+ * @param {*} marginProportion 
+ */
 async function mark(
     waterFile,
     originFile,
@@ -75,6 +56,7 @@ async function mark(
         Jimp.read(waterFile),
         Jimp.read(originFile),
     ]);
+   
 
     // 对水印图片进行缩放
     const curProportion = origin.bitmap.width / water.bitmap.width;
@@ -94,3 +76,25 @@ async function mark(
 
     await origin.write(targetFile);
 }
+
+/**
+ * 
+ */
+router.post('/', upload.single('img'), async (req, res, next) => {
+    const url = `/uploads/${req.file.filename}`;
+
+    // 加水印
+    const newPath = path.resolve(
+        __dirname,
+        "../../dist/uploads",
+        req.file.filename
+    );
+    const waterPath = path.resolve(__dirname, '../../dist/uploads/water.png')
+    await mark(waterPath, req.file.path, newPath);
+    res.send({
+        code: 0,
+        msg: '',
+        data: url
+    })
+})
+module.exports = router;

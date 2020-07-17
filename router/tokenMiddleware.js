@@ -1,4 +1,3 @@
-
 const { pathToRegexp } = require("path-to-regexp");
 const jwt = require('./jwt');
 const fCode = require("../util/formatResult");
@@ -26,7 +25,9 @@ module.exports = (req, res, next) => {
         next();
         return;
     }
+    
     const result = jwt.verify(req);
+    console.log( result);
     if (result) {
         //认证通过
         req.userId = result.id; // whoami中可用到
@@ -37,6 +38,12 @@ module.exports = (req, res, next) => {
     }
 
 }
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 function handleNonToken(req, res, next) {
     // res.status(403).send(getErr('you dont have any token to access the api', 403));
     res.send(fCode('2', '没有登录'));
